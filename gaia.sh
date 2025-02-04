@@ -42,7 +42,7 @@ check_states() {
 # Функция вывода логов
 check_logs() {
     echo "📜 Вывод логов ноды..."
-    journalctl -u gaianet --no-pager --lines=100
+    tail -f ~/gaianet/log/*
 }
 
 # Функция удаления ноды

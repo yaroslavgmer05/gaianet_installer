@@ -24,13 +24,13 @@ download_node() {
     
     echo "🚀 Установка GaiaNet..."
     curl -sSfL 'https://github.com/GaiaNet-AI/gaianet-node/releases/latest/download/install.sh' | bash
-    source ~/.bashrc
+    export PATH=$HOME/gaianet/bin:$PATH && export PATH=$HOME/gaianet/bin:$PATH && source ~/.bashrc
     
     echo "🛠️ Инициализация ноды с выбранной моделью..."
-    gaianet init --config https://raw.gaianet.ai/qwen-1.5-0.5b-chat/config.json
+    $HOME/gaianet/bin/gaianet init --config https://raw.gaianet.ai/qwen-1.5-0.5b-chat/config.json
     
     echo "🚀 Запуск ноды..."
-    gaianet start
+    $HOME/gaianet/bin/gaianet start
 }
 
 # Функция просмотра информации о ноде

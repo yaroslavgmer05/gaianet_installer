@@ -24,7 +24,7 @@ download_node() {
     
     echo "🚀 Установка GaiaNet..."
     curl -sSfL 'https://github.com/GaiaNet-AI/gaianet-node/releases/latest/download/install.sh' | bash
-    export PATH=$HOME/gaianet/bin:$PATH && export PATH=$HOME/gaianet/bin:$PATH && source ~/.bashrc
+    export PATH=$HOME/gaianet/bin:$PATH && source ~/.bashrc
     
     echo "🛠️ Инициализация ноды с выбранной моделью..."
     $HOME/gaianet/bin/gaianet init --config https://raw.gaianet.ai/qwen-1.5-0.5b-chat/config.json
@@ -36,13 +36,13 @@ download_node() {
 # Функция просмотра информации о ноде
 check_states() {
     echo "📊 Проверка состояния ноды..."
-    gaianet info
+    $HOME/gaianet/bin/gaianet info
 }
 
 # Функция вывода логов
 check_logs() {
     echo "📜 Вывод логов ноды..."
-    tail -f ~/gaianet/log/*
+    journalctl -u gaianet --no-pager --lines=100
 }
 
 # Функция удаления ноды
@@ -52,6 +52,23 @@ delete_node() {
     curl -sSfL 'https://github.com/GaiaNet-AI/gaianet-node/releases/latest/download/uninstall.sh' | bash
     sudo rm -rf $HOME/gaianet
     echo "✅ Нода полностью удалена!"
+}
+
+# Функция перезапуска ноды
+restart_node() {
+    echo "🔄 Перезапуск ноды..."
+    gaianet stop
+    sleep 2
+    gaianet start
+    echo "✅ Нода успешно перезапущена!"
+}
+
+# Функция переустановки ноды
+reinstall_node() {
+    echo "🔄 Полная переустановка ноды..."
+    delete_node
+    download_node
+    echo "✅ Нода успешно переустановлена!"
 }
 
 # Функция выхода
@@ -66,16 +83,20 @@ while true; do
     echo "1. ✨ Установить ноду"
     echo "2. 📊 Посмотреть данные"
     echo "3. 🟦 Посмотреть логи"
-    echo "4. 🗑️ Удалить ноду"
-    echo "5. 👋 Выйти из скрипта"
+    echo "4. 🛑 Перезапустить ноду"
+    echo "5. 🔄 Переустановить ноду"
+    echo "6. 🗑️ Удалить ноду"
+    echo "7. 👋 Выйти из скрипта"
     read -p "Выберите пункт меню: " choice
 
     case $choice in
       1) download_node ;;
       2) check_states ;;
       3) check_logs ;;
-      4) delete_node ;;
-      5) exit_from_script ;;
+      4) restart_node ;;
+      5) reinstall_node ;;
+      6) delete_node ;;
+      7) exit_from_script ;;
       *) echo "❌ Неверный пункт. Попробуйте снова." ;;
     esac
   done

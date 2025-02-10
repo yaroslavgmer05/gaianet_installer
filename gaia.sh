@@ -71,6 +71,15 @@ reinstall_node() {
     echo "✅ Нода успешно переустановлена!"
 }
 
+# Функция исправления Device ID
+fix_device_id() {
+    echo "🔄 Исправление Device ID..."
+    gaianet stop
+    gaianet init --config https://raw.gaianet.ai/qwen-1.5-0.5b-chat/config.json
+    gaianet start
+    echo "✅ Device ID исправлен и нода запущена!"
+}
+
 # Функция выхода
 exit_from_script() {
     echo "👋 Выход из скрипта."
@@ -85,8 +94,9 @@ while true; do
     echo "3. 🟦 Посмотреть логи"
     echo "4. 🛑 Перезапустить ноду"
     echo "5. 🔄 Переустановить ноду"
-    echo "6. 🗑️ Удалить ноду"
-    echo "7. 👋 Выйти из скрипта"
+    echo "6. 🛠️ Исправить Device ID"
+    echo "7. 🗑️ Удалить ноду"
+    echo "8. 👋 Выйти из скрипта"
     read -p "Выберите пункт меню: " choice
 
     case $choice in
@@ -95,8 +105,9 @@ while true; do
       3) check_logs ;;
       4) restart_node ;;
       5) reinstall_node ;;
-      6) delete_node ;;
-      7) exit_from_script ;;
+      6) fix_device_id ;;
+      7) delete_node ;;
+      8) exit_from_script ;;
       *) echo "❌ Неверный пункт. Попробуйте снова." ;;
     esac
   done
